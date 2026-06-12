@@ -123,11 +123,15 @@ def print_state():
 
 def export_traj():
     os.makedirs(OUT, exist_ok=True)
+    Sy    = np.diag([1., -1., 1., 1.])
+    Rx180 = np.array([[1.,0.,0.,0.],[0.,-1.,0.,0.],[0.,0.,-1.,0.],[0.,0.,0.,1.]])
     with open(os.path.join(OUT, "traj_raw.txt"), "w") as f:
         for i in range(3):
-            T = adj_T[i] @ poses[i]
+            T = adj_T[i] @ poses[i]   # world-space adjustment + original pose
+            T = Sy @ T @ Sy            # RH → Unity LH
+            T = Rx180 @ T              # 180° X rotation to face scene correctly
             f.write(" ".join(f"{v:.18e}" for v in T.flatten()) + "\n")
-    print(f"  saved {OUT}/traj_raw.txt"); return False
+    print(f"  saved {OUT}/traj_new.txt"); return False
 
 vis.register_key_callback(ord('1'), lambda v: select(0))
 vis.register_key_callback(ord('2'), lambda v: select(1))
