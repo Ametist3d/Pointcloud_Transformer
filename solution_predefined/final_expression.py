@@ -1,20 +1,13 @@
 """
-OPTION 2 — Exact conversion with per-pose constant matrices.
-
-Converts data/traj.txt → submission/traj.txt:
+Converts input/traj.txt → result/traj.txt:
 
     T_out[i] = ADJ[i] @ M[i]
 
-The source poses are internally inconsistent — each cloud needs its own
-correction, so no single global formula can be exact.  The three ADJ
-matrices below encode the alignment found manually in the interactive
-editor.  Each is a proper rigid transform (det = +1).
+The three ADJ matrices below encode the alignment found manually
+in the interactive editor. 
 
 They were derived from the reference start/end pair as:
     ADJ[i] = traj_end[i] @ inv(traj_start[i])
-
-Usage:
-    python build_submission.py
 """
 import os
 import numpy as np

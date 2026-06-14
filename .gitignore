@@ -1,5 +1,6 @@
 input/
 output/
+out_explore/
 .venv/
 __pycache__/
 venv/
